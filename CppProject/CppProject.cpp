@@ -11,10 +11,6 @@ using namespace std;
 
 int main() {
 
-
-    
-
-
     unordered_map<char, vector<edge>> map{
         {'A', {edge('A','B',2)}},
         {'B', {edge('B','C',4)}},

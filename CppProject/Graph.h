@@ -25,35 +25,7 @@ private:
 
 public:
 
-	Graph(unordered_map<char, vector<edge>> edges)
-		: _edges(edges) {
-	}
-
-	vector<edge> neighbors(char id) {
-		return _edges[id];
-	}
-
-
-	void print() {
-
-		cout << "Graph Nodes:\n";
-		
-		for (auto n : _edges) {
-			cout << n.first << ", ";
-		}
-
-		cout << "\n\n" << "Graph Edges:";
-
-		for (auto n : _edges) {
-			cout << "\nFrom Node " << n.first << ":\n";
-			if (n.second.size() == 0) {
-				cout << "No edges\n";
-				continue;
-			}
-			for (edge e : n.second) {
-				e.print();
-				cout << '\n';
-			}
-		}
-	}
+	Graph(unordered_map<char, vector<edge>> edges);
+	vector<edge> neighbors(char id);
+	void print();
 };
