@@ -27,9 +27,12 @@
     <ClCompile Include="Pathfinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GraphBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="csv.csv">
+    <None Include="graph.csv">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -38,6 +41,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PriorityQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

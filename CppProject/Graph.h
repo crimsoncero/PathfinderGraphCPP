@@ -24,7 +24,7 @@ private:
 	unordered_map<char, vector<edge>> _edges;
 
 public:
-
+	Graph() {};
 	Graph(unordered_map<char, vector<edge>> edges);
 	vector<edge> neighbors(char id);
 	void print();

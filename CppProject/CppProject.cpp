@@ -1,32 +1,42 @@
 // CppProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "Graph.h"
+#include "GraphBuilder.h"
 #include "Pathfinder.h"
+
 
 using namespace std;
 
 int main() {
 
-    unordered_map<char, vector<edge>> map{
-        {'A', {edge('A','B',2)}},
-        {'B', {edge('B','C',4)}},
-        {'C', {edge('C','B',4), edge('C','D',3), edge('C','F',10)}},
-        {'D', {edge('D','C',3), edge('D','E',2)}},
-        {'E', {edge('E','F',1)}},
-        {'F', {}},
-    };
+    GraphBuilder gb;
+    Pathfinder pf;
+
+    end_codes code; 
+    Graph graph = gb.from_csv("C:\\Users\\crims\\Projects\\CppProject\\CppProject\\graph.csv", code);
+
+    switch (code) {
+    case success: 
+        cout << "Graph Building Success!\n";
+        graph.print();
+        break;
+    case failure:
+        cout << "Graph Building Failure!\n";
+        break;
+    }
 
 
 
-    Graph graph(map);
+    char from, to;
+    cout << "From: ";
+    cin >> from;
+    cout << "To: ";
+    cin >> to;
 
-    graph.print();
-    cout << '\n';
-    vector<char> path = Pathfinder::dijkstra_search(graph, 'A', 'F');
+    vector<char> path = pf.dijkstra_search(graph, from, to);
 
     for (int i = 0; i < path.size(); i++) {
         cout << path[i];
