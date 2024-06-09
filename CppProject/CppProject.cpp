@@ -11,18 +11,26 @@ using namespace std;
 
 int main() {
 
-    unordered_map<char, vector<char>> map{
-        {'A', {'B'}},
-        {'B', {'C'}},
-        {'C', {'B', 'D', 'F'}},
-        {'D', {'C', 'E'}},
-        {'E', {'F'}},
+
+    
+
+
+    unordered_map<char, vector<edge>> map{
+        {'A', {edge('A','B',2)}},
+        {'B', {edge('B','C',4)}},
+        {'C', {edge('C','B',4), edge('C','D',3), edge('C','F',10)}},
+        {'D', {edge('D','C',3), edge('D','E',2)}},
+        {'E', {edge('E','F',1)}},
         {'F', {}},
     };
 
+
+
     Graph graph(map);
 
-    vector<char> path = Pathfinder::breadth_first_search(graph, 'A', 'D');
+    graph.print();
+    cout << '\n';
+    vector<char> path = Pathfinder::dijkstra_search(graph, 'A', 'F');
 
     for (int i = 0; i < path.size(); i++) {
         cout << path[i];
@@ -31,7 +39,6 @@ int main() {
         }
 
     }
-
 
 
 }
