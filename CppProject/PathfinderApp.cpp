@@ -22,7 +22,8 @@ int PathfinderApp::ImportGraph()
 		}
 	}
 
-	_graphDefined = true;
+	if(endCode == success)
+		_graphDefined = true;
 	return 0;
 }
 

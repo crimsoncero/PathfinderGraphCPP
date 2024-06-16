@@ -7,11 +7,13 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 	unordered_map<char, vector<edge>> map;
 	string line = "";
 	Graph error_graph;
+	end_code = success;
 
 	cout << "Building Graph" << '\n';
 	file.open(file_path);
 	if (!file.is_open()) {
 		cout << "Invalid path!" << '\n';
+		end_code = failure;
 	}
 	else {
 		cout << "Valid path" << '\n';
@@ -45,7 +47,6 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 	}
 
 
-	end_code = success;
 	Graph graph(map);
 	return graph;
 
