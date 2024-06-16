@@ -132,6 +132,7 @@
     <ClCompile Include="GraphBuilder.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="Pathfinder.h" />
+    <ClCompile Include="PathfinderApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graph.csv" />
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GraphBuilder.h" />
+    <ClInclude Include="PathfinderApp.h" />
     <ClInclude Include="PriorityQueue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

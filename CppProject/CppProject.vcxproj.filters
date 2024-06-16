@@ -30,6 +30,9 @@
     <ClCompile Include="GraphBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PathfinderApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="graph.csv">
@@ -44,6 +47,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfinderApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
