@@ -20,26 +20,112 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 		int row = 0;
 		while (getline(file, line)) 
 		{
-			cout << "Parsing row " << row << "..." << '\n';
-			pair<char, vector<edge>> node_pair = parse_node(line);
-			if (node_pair.first == '*') {
-				cout << "Parsing row " << row << " failed" << '\n';
-				end_code = failure;
-				return error_graph;
-			}
-			
-			cout << "Parsing row " << row << " succeded" << '\n';
-			
-			// check if a node exist in the map already
-			if (map.find(node_pair.first) == map.end()) {
-				map[node_pair.first] = node_pair.second;
+			if (row == 0) {
+				// Parse Nodes to the map
+				cout << "Parsing nodes..." << '\n';
+				string w = "";
+				for (int i = 0; i < line.size(); i++) {
+					if (line[i] == ',') {
+						if (w.size() > 1) {
+							cout << "Invalid Node " << w << " Skipped" << ": Not a char" << '\n';
+							end_code = partialSuccess;
+						}
+						else if (w[0] > 'Z' || w[0] < 'A') {
+							cout << "Invalid Node " << w << " Skipped" << ": Not between A - Z" << '\n';
+							end_code = partialSuccess;
+						}
+						else if (map.find(w[0]) != map.end()) {
+							cout << "Invalid Node " << w << " Skipped" << ": Already defined" << '\n';
+							end_code = partialSuccess;
+						}
+						else {
+							vector<edge> edges;
+							map[w[0]] = edges;
+						}
+
+						w = "";
+					}
+					else {
+						w += line[i];
+					}
+				}
 			}
 			else {
-				cout << "Node already exist in the graph\n";
-				cout << "Parsing row " << row << " failed" << '\n';
-				end_code = failure;
-				return error_graph;
+				// Parse Edge
+				cout << "Parsing edge " << row << "..." << '\n';
+				string w = "";
+				char from = '*';
+				char to = '*';
+				int cost = 0;
+
+				bool failed = false;
+
+				int col = 0;
+				for (int i = 0; i < line.size(); i++) {
+					if (line[i] == ',') {
+						if (col > 2) {
+							failed = true;
+						}
+						if (col < 2) {
+							if (w.size() > 1) {
+								cout << "Invalid Edge " << w << " Skipped" << ": Node not a char" << '\n';
+								failed = true;
+							}
+							else if (w[0] > 'Z' || w[0] < 'A') {
+								cout << "Invalid Edge " << w << " Skipped" << ": Node not between A - Z" << '\n';
+								failed = true;
+							}
+							else if (map.find(w[0]) == map.end()) {
+								cout << "Invalid Edge " << w << " Skipped" << ": Node doesn't Exist" << '\n';
+								failed = true;
+							}
+							else if (col == 0) {
+								from = w[0];
+							}
+							else {
+								to = w[0];
+							}
+						}
+						if (col == 2) {
+							try {
+								cost = stoi(w);
+							}
+							catch (exception e) {
+								cout << "Invalid Cost"  << '\n';
+								failed = true;
+							}
+						}
+
+						w = "";
+						col++;
+					}
+					else {
+						w += line[i];
+					}
+
+					
+
+					
+				}
+				if (failed) {
+					end_code = partialSuccess;
+				}
+				else {
+					edge forwardEdge(from, to, cost);
+					edge reverseEdge(to, from, cost);
+
+					if (does_edge_exist(forwardEdge, map)) {
+						cout << "Edge already exists - skipped" << '\n';
+						end_code = partialSuccess;
+					}
+					else {
+						map[forwardEdge.from].emplace_back(forwardEdge);
+						map[reverseEdge.from].emplace_back(reverseEdge);
+					}
+				}
+
 			}
+		
 			row++;
 		}
 
@@ -52,77 +138,104 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 
 }
 
-pair<char, vector<edge>> GraphBuilder::parse_node(string node_csv)
+
+
+
+//pair<char, vector<edge>> GraphBuilder::parse_node(string node_csv)
+//{
+//	char node_name = ' ';
+//	vector<edge> edges;
+//	pair<char, vector<edge>> node;
+//	
+//	node.first = '*'; // For checking errors, if still * then the methods ended prematurly
+//
+//	int index = 0;
+//
+//	if (node_csv.size() == 0) {
+//		cout << "Line is empty" << '\n';
+//		return node;
+//	}
+//
+//
+//	string w = "";
+//	for (int i = 0; i < node_csv.size(); i++) {
+//		if (node_csv[i] == ',') {
+//			// Node case:
+//			if (index == 0) {
+//				// Node is one character long.
+//				if (w.size() != 1) {
+//					cout << "Node name must only be a single char!" << '\n';
+//					return node;
+//				}
+//				char n = w[0];
+//				if (n < 'A' || n > 'Z') {
+//					cout << "Node name can only be a letter from A to Z (uppercase only)" << '\n';
+//					return node;
+//				}
+//				node_name = n;
+//			}
+//			// Edge case:
+//			else {
+//				if (w.size() < 2) {
+//					// At minimum edge has two parameters - name(char) and number;
+//					cout << "Edge paramaters are missing at edge index " << index << '\n';
+//					return node;
+//				}
+//				
+//				char e_name = w[0];
+//				int cost = 0;
+//				string cost_string = w.substr(1);
+//				try {
+//					cost = stoi(cost_string);
+//				}
+//				catch (exception e) {
+//					cout << "Invalid parsing of cost for edge to " << e_name << " at index " << index << '\n';
+//					return node;
+//				}
+//
+//				if (e_name == node_name) {
+//					cout << "Self pointing edge at index " << index << '\n';
+//					return node;
+//				}
+//				
+//				edge edge(node_name, e_name, cost);
+//				edges.emplace_back(edge);
+//			}
+//
+//			w = "";
+//			index++;
+//		}
+//		else {
+//			// Create the comma seperated value.
+//			w += node_csv[i];
+//		}
+//	}
+//	
+//
+//	node.first = node_name;
+//	node.second = edges;
+//	return node;
+//}
+
+bool GraphBuilder::does_edge_exist(edge new_edge, unordered_map<char, vector<edge>> map)
 {
-	char node_name = ' ';
-	vector<edge> edges;
-	pair<char, vector<edge>> node;
-	
-	node.first = '*'; // For checking errors, if still * then the methods ended prematurly
 
-	int index = 0;
+	vector<edge> edges = map[new_edge.from];
 
-	if (node_csv.size() == 0) {
-		cout << "Line is empty" << '\n';
-		return node;
-	}
-
-
-	string w = "";
-	for (int i = 0; i < node_csv.size(); i++) {
-		if (node_csv[i] == ',') {
-			// Node case:
-			if (index == 0) {
-				// Node is one character long.
-				if (w.size() != 1) {
-					cout << "Node name must only be a single char!" << '\n';
-					return node;
-				}
-				char n = w[0];
-				if (n < 'A' || n > 'Z') {
-					cout << "Node name can only be a letter from A to Z (uppercase only)" << '\n';
-					return node;
-				}
-				node_name = n;
-			}
-			// Edge case:
-			else {
-				if (w.size() < 2) {
-					// At minimum edge has two parameters - name(char) and number;
-					cout << "Edge paramaters are missing at edge index " << index << '\n';
-					return node;
-				}
-				
-				char e_name = w[0];
-				int cost = 0;
-				string cost_string = w.substr(1);
-				try {
-					cost = stoi(cost_string);
-				}
-				catch (exception e) {
-					cout << "Invalid parsing of cost for edge to " << e_name << " at index " << index << '\n';
-					return node;
-				}
-
-				if (e_name == node_name) {
-					cout << "Self pointing edge at index " << index << '\n';
-					return node;
-				}
-				
-				edge edge(node_name, e_name, cost);
-				edges.emplace_back(edge);
-			}
-
-			w = "";
-			index++;
-		}
-		else {
-			// Create the comma seperated value.
-			w += node_csv[i];
+	// Check if there is an edge with the same end point;
+	for (edge next : edges) {
+		if (next.to == new_edge.to) {
+			return true;
 		}
 	}
 
-	node.first = node_name;
-	node.second = edges;
-	return node;
+	// Check for the end node
+	edges = map[new_edge.to];
+	for (edge next : edges) {
+		if (next.to == new_edge.to) {
+			return true;
+		}
+	}
+
+	return false;
 }
