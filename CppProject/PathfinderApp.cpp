@@ -5,7 +5,10 @@ int PathfinderApp::ImportGraph()
 	string path = "";
 	end_codes endCode = failure;
 	
-	while (endCode == failure) {
+	PrintFileRules();
+
+
+	while (endCode != success) {
 		cout << "Please enter the path to the graph file. Make sure to use an extra '\\' before every '\\':\n";
 		path = "";
 		cin >> path;
@@ -20,6 +23,7 @@ int PathfinderApp::ImportGraph()
 			if (input == "2")
 				return 1;
 		}
+		if(endCode == )
 	}
 
 	if(endCode == success)
@@ -59,7 +63,19 @@ int PathfinderApp::FindPath()
 	}
 	cout << "\n";
 	return 0;
-};
+}
+
+
+void PathfinderApp::PrintFileRules()
+{
+	cout << "GUIDELINES FOR GRAPH FILE IMPORT" << endl;
+	cout << "1. Nodes are represented by a single character from A to Z, capital letters only." << endl;
+	cout << "2. Define the nodes in the graph in the first row. fe - \"A,E,G,\"" << endl;
+	cout << "3. Define each edge in a row after the first one using three elements: Node, Node, Cost. fe - \"A,E,3\"" << endl;
+	cout << "4. Invalid entries or duplicates will be skipped" << endl;
+
+}
+;
 
 PathfinderApp::PathfinderApp()
 	: _graphBuilder(), _pathfinder(), _graphDefined(false)

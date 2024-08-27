@@ -14,6 +14,7 @@ private:
 	int ImportGraph();
 	int ViewGraph();
 	int FindPath();
+	void PrintFileRules();
 	
 public:
 	PathfinderApp();
