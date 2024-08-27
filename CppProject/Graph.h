@@ -27,5 +27,7 @@ public:
 	Graph() {};
 	Graph(unordered_map<char, vector<edge>> edges);
 	vector<edge> neighbors(char id);
+	bool isNodeValid(char node);
 	void print();
+	void printNodes();
 };

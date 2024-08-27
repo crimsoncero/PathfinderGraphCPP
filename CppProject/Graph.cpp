@@ -8,6 +8,14 @@ vector<edge> Graph::neighbors(char id) {
 	return _edges[id];
 }
 
+bool Graph::isNodeValid(char node)
+{
+	if (_edges.find(node) == _edges.end())
+		return false;
+	else
+		return true;
+}
+
 void Graph::print() {
 
 	cout << "Graph Nodes:\n";
@@ -29,4 +37,23 @@ void Graph::print() {
 			cout << '\n';
 		}
 	}
+}
+
+void Graph::printNodes()
+{
+	bool flag = true;
+	
+	cout << "The nodes in the graph are: ";
+
+	for (auto n : _edges) {
+		if (flag == true) {
+			cout << n.first;
+			flag = false;
+		}
+		else {
+			cout << ", " << n.first;
+		}
+	}
+
+	cout << endl;
 }

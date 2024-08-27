@@ -27,15 +27,15 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 				for (int i = 0; i < line.size(); i++) {
 					if (line[i] == ',') {
 						if (w.size() > 1) {
-							cout << "Invalid Node " << w << " Skipped" << ": Not a char" << '\n';
+							cout << "Invalid Node " << w << " Node Skipped" << ": Not a char" << '\n';
 							end_code = partialSuccess;
 						}
 						else if (w[0] > 'Z' || w[0] < 'A') {
-							cout << "Invalid Node " << w << " Skipped" << ": Not between A - Z" << '\n';
+							cout << "Invalid Node " << w << " Node Skipped" << ": Not between A - Z" << '\n';
 							end_code = partialSuccess;
 						}
 						else if (map.find(w[0]) != map.end()) {
-							cout << "Invalid Node " << w << " Skipped" << ": Already defined" << '\n';
+							cout << "Invalid Node " << w << " Node Skipped" << ": Already defined" << '\n';
 							end_code = partialSuccess;
 						}
 						else {
@@ -68,15 +68,15 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 						}
 						if (col < 2) {
 							if (w.size() > 1) {
-								cout << "Invalid Edge " << w << " Skipped" << ": Node not a char" << '\n';
+								cout << "Invalid Node " << w << " Edge Skipped" << ": Node not a char" << '\n';
 								failed = true;
 							}
 							else if (w[0] > 'Z' || w[0] < 'A') {
-								cout << "Invalid Edge " << w << " Skipped" << ": Node not between A - Z" << '\n';
+								cout << "Invalid Node " << w << " Edge Skipped" << ": Node not between A - Z" << '\n';
 								failed = true;
 							}
 							else if (map.find(w[0]) == map.end()) {
-								cout << "Invalid Edge " << w << " Skipped" << ": Node doesn't Exist" << '\n';
+								cout << "Invalid Node " << w << " Edge Skipped" << ": Node doesn't Exist" << '\n';
 								failed = true;
 							}
 							else if (col == 0) {
@@ -91,7 +91,7 @@ Graph GraphBuilder::from_csv(string file_path, end_codes& end_code) {
 								cost = stoi(w);
 							}
 							catch (exception e) {
-								cout << "Invalid Cost"  << '\n';
+								cout << "Invalid Cost " << w << " Edge Skipped" << ": Not a number" << '\n';
 								failed = true;
 							}
 						}

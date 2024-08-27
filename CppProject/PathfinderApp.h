@@ -15,6 +15,7 @@ private:
 	int ViewGraph();
 	int FindPath();
 	void PrintFileRules();
+	void PrintPath(vector<char> path);
 	
 public:
 	PathfinderApp();
